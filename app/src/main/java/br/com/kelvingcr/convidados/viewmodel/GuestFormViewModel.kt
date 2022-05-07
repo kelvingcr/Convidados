@@ -12,27 +12,24 @@ import br.com.kelvingcr.convidados.service.repository.GuestRepository
 class GuestFormViewModel(application: Application) : AndroidViewModel(application) {
 
     private val mContext = application.applicationContext
-    private val mGuestRepository: GuestRepository = GuestRepository.getInstance(mContext)
+    private val mGuestRepository: GuestRepository = GuestRepository(mContext)
 
     private var mSaveGuest = MutableLiveData<Boolean>()
     val saveGuest: LiveData<Boolean> = mSaveGuest
 
     fun save(id: Int, name: String, presence: Boolean) {
-        val guest = GuestModel(id, name, presence)
+        val guest = GuestModel().apply {
+            this.id = id
+            this.name = name
+            this.presence = presence
+        }
+
         if(id == 0 ) {
             mSaveGuest.value = mGuestRepository.save(guest)
         }else {
             mSaveGuest.value = mGuestRepository.update(guest)
         }
     }
-
-    fun getAll() =  mGuestRepository.getAll()
-
-    fun get(id: Int) =  mGuestRepository.get(id)
-
-    fun update(guest: GuestModel) =  mGuestRepository.update(guest)
-
-    fun delete(id: Int) =  mGuestRepository.delete(id)
 
     private var mGuest = MutableLiveData<GuestModel>()
     val guest: LiveData<GuestModel> = mGuest

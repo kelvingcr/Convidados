@@ -11,7 +11,7 @@ import br.com.kelvingcr.convidados.service.repository.GuestRepository
 
 class GuestsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val mGuestRepository = GuestRepository.getInstance(application.applicationContext)
+    private val mGuestRepository = GuestRepository(application.applicationContext)
 
     private val mGuestList = MutableLiveData<List<GuestModel>>()
 
@@ -27,5 +27,5 @@ class GuestsViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun delete(id: Int) = mGuestRepository.delete(id)
+    fun delete(id: Int) = mGuestRepository.delete(mGuestRepository.get(id))
 }
